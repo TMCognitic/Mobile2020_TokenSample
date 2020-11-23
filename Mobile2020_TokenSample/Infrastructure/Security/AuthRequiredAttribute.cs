@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Primitives;
 using Mobile2020_TokenSample.Models.Entities;
+using Mobile2020_TokenSample.Models.Interfaces;
+using Mobile2020_TokenSample.Models.Services.Mappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Mobile2020_TokenSample.Infrastructure.Security
 {
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class AuthRequiredAttribute : TypeFilterAttribute
     {
         public AuthRequiredAttribute() : base(typeof(AuthRequiredFilter))
@@ -23,6 +26,7 @@ namespace Mobile2020_TokenSample.Infrastructure.Security
             public void OnAuthorization(AuthorizationFilterContext context)
             {
                 ITokenService tokenService = (ITokenService)context.HttpContext.RequestServices.GetService(typeof(ITokenService));
+                IAuthService authService = (IAuthService)context.HttpContext.RequestServices.GetService(typeof(IAuthService));
 
                 context.HttpContext.Request.Headers.TryGetValue("Authorization", out StringValues authorizations);
                 string token = authorizations.SingleOrDefault(authorization => authorization.StartsWith("Bearer "));
@@ -41,7 +45,11 @@ namespace Mobile2020_TokenSample.Infrastructure.Security
                     return;
                 }
 
-                return;
+                if (!authService.Check(user.ToDbUser()))
+                {
+                    context.Result = new UnauthorizedResult();
+                    return;
+                }
             }
         }
     }

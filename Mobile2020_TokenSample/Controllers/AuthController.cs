@@ -4,11 +4,6 @@ using Mobile2020_TokenSample.Models.Entities;
 using Mobile2020_TokenSample.Models.Forms;
 using Mobile2020_TokenSample.Models.Interfaces;
 using Mobile2020_TokenSample.Models.Services.Mappers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,7 +28,7 @@ namespace Mobile2020_TokenSample.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User() { LastName = form.LastName, FirstName = form.LastName, Email = form.Email, Passwd = form.Passwd };
+                User user = new User() { LastName = form.LastName, FirstName = form.FirstName, Email = form.Email, Passwd = form.Passwd };
                 _authService.Register(user.ToDbUser());
                 return Ok();
             }

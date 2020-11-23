@@ -27,6 +27,7 @@ namespace Mobile2020_TokenSample.Controllers
         }
 
         [HttpGet]
+        [AuthRequired]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();

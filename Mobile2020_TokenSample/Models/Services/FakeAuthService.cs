@@ -31,5 +31,10 @@ namespace Mobile2020_TokenSample.Models.Services
         {
             return _users.SingleOrDefault(u => u.Email == email.ToLower() && Convert.ToBase64String(u.Passwd) == Convert.ToBase64String(SHA1.HashData(Encoding.Default.GetBytes(passwd))));
         }
+
+        public bool Check(User user)
+        {
+            return _users.SingleOrDefault(u => u.Email == user.Email && u.Id == user.Id /* Actif, non banni, etc....*/) is not null;
+        }
     }
 }

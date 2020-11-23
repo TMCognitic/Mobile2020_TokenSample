@@ -12,7 +12,7 @@ namespace Mobile2020_TokenSample.Models.Services.Mappers
     {
         internal static User ToDbUser(this ApiUser entity)
         {
-            return new User() { LastName = entity.LastName, FirstName = entity.FirstName, Email = entity.Email, Passwd = SHA1.HashData(Encoding.Default.GetBytes("Test1234=")) };
+            return new User() { Id = entity.Id, LastName = entity.LastName, FirstName = entity.FirstName, Email = entity.Email, Passwd = SHA1.HashData(Encoding.Default.GetBytes("Test1234=")) };
         }
 
         internal static ApiUser ToApiUser(this User entity)
